@@ -1,4 +1,5 @@
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,13 +11,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // n: 피연산자의 개수 (A, B, C, ...)
+        
         int n = Integer.parseInt(br.readLine());
-
-        // 후위 표기식 문자열 입력
+ 
         String s = br.readLine();
 
-        // A, B, C, D ...에 대응되는 숫자를 저장하는 Map
+        
         Map<Character, Double> map = new HashMap<>();
         char c = 'A';  // 문자 'A'부터 시작하여 순차적으로 값을 할당
 
