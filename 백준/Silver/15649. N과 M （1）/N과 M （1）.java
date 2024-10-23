@@ -1,44 +1,54 @@
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static int[] arr;
-    public static boolean[] visit;
-    public static void main(String[] args) throws Exception{
+    static StringBuilder sb = new StringBuilder();  // 출력 결과를 저장할 StringBuilder
+    static int n, m;  // n: 최대 숫자, m: 고를 숫자의 개수
+    static boolean[] visit;  // 방문 여부를 체크할 배열
+    static int[] arr;  // 선택한 숫자를 저장할 배열
+
+    public static void main(String[] args) throws IOException {
+        // 입력 받기
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
 
-        arr = new int[m];
-        visit = new boolean[n];
+        n = Integer.parseInt(st.nextToken());  // N 값
+        m = Integer.parseInt(st.nextToken());  // M 값
 
-        dfs(n,m,0);
+        
+        visit = new boolean[n + 1];
+        arr = new int[m + 1];
 
+       
+        dfs(1);
+        System.out.print(sb);
     }
-    public static void dfs(int N, int M, int depth) {
-        // 종료 조건: depth가 M과 같으면, arr 배열 출력
-        if (depth == M) {
-            for (int val : arr) {
-                System.out.print(val + " ");
+
+
+    private static void dfs(int depth) {
+        // M개의 숫자를 모두 선택한 경우
+        if (depth == m + 1) {
+
+            for (int i = 1; i <= m; i++) {
+                sb.append(arr[i]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
 
-        // N개의 숫자를 순회
-        for (int i = 0; i < N; i++) { // 3 1
-            // 현재 숫자 i가 아직 선택되지 않았으면
-            if (!visit[i]) {
-                visit[i] = true; // 숫자 i를 선택했음을 표시
-                arr[depth] = i + 1; // arr 배열의 현재 깊이에 숫자 저장 (i+1로 저장, 숫자는 1부터 시작)
-                dfs(N, M, depth + 1); // 다음 깊이로 이동하여 DFS 재귀 호출
-                visit[i] = false; // 숫자 i 선택 해제 (다른 경로에서 사용할 수 있도록)
+        // 1부터 N까지의 숫자를 돔
+        for (int i = 1; i <= n; i++) {
+            if (!visit[i]) {  // 아직 방문하지 않은 숫자만 선택
+                visit[i] = true;  // 방문 체크
+                arr[depth] = i;  // 선택한 숫자를 현재 깊이에 저장
+                dfs(depth + 1);  // 다음 깊이로 이동
+
+                // 백트래킹
+                visit[i] = false;
             }
         }
     }
-
 }
