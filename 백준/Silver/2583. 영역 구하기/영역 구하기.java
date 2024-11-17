@@ -1,76 +1,73 @@
+
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static int m,n,k;
-    public static int[][] paper;
-    public static boolean[][] visited;
+    static int[][] arr;
+    static int devided;
+    static boolean[][] visited;
+    static int[] dx = {1 , 0 , -1, 0};
+    static int[] dy = {0 , -1 , 0, 1};
+    static int M;
+    static int N;
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+         M = Integer.parseInt(stringTokenizer.nextToken());
+         N = Integer.parseInt(stringTokenizer.nextToken());
+        int K = Integer.parseInt(stringTokenizer.nextToken());
 
-    public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st ;
+        arr = new int[M][N];
+        visited = new boolean[M][N];
 
-        st = new StringTokenizer(br.readLine());
+        for(int i = 0 ; i < K; i++) { //직사각형 그리기
+            stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+            int a = Integer.parseInt(stringTokenizer.nextToken());
+            int b = Integer.parseInt(stringTokenizer.nextToken());
+            int c = Integer.parseInt(stringTokenizer.nextToken());
+            int d = Integer.parseInt(stringTokenizer.nextToken());
 
-        m = Integer.parseInt(st.nextToken());
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-
-        paper = new int[m][n];
-        visited = new boolean[m][n];
-
-        for(int i = 0 ; i < k; i++){
-            st = new StringTokenizer(br.readLine()," ");
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            int d = Integer.parseInt(st.nextToken());
-
-            for(int j = b; j<d; j++) {
-                for (int l = a; l < c; l++) {
-                        paper[j][l] = 1;
+            for (int i1 = M - d; i1 < M - b; i1++) { // y축 기준 뒤집기
+                for (int j = a; j < c; j++) { // x축은 그대로
+                    arr[i1][j] = 1;
                 }
             }
-
         }
-        int territories=0;
-        List<Integer> list = new ArrayList<>();
-        for(int i = 0 ; i < m ; i++){
-            for(int j = 0 ; j < n ; j++){
-                if(paper[i][j] == 0 && !visited[i][j]){
-                    territories++;
-                    list.add(dfs(i,j));
+        ArrayList<Integer> areas = new ArrayList<>();
+        for(int i1 = 0 ; i1 < M; i1++){
+            for(int j = 0 ; j < N; j++){
+                if(!visited[i1][j] && arr[i1][j] == 0){
+                    areas.add(dfs(i1,j));
                 }
             }
         }
 
-        Collections.sort(list);
-
-        System.out.println(territories);
-       for(int i : list){
-           System.out.print(i+" ");
-       }
-
+        Collections.sort(areas);
+        System.out.println(areas.size());
+        for(int i1 : areas){
+            System.out.print(i1+" ");
+        }
 
     }
 
-    public static int dfs(int x, int y ){
-        int[] dx ={0,0,-1,1};
-        int[] dy ={-1,1,0,0};
+    private static int dfs(int x,int y){
         visited[x][y] = true;
-        int cnt = 1;
+        int size = 1;
         for(int i = 0 ; i < 4; i++){
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+            int nx = x +dx[i];
+            int ny = y +dy[i];
 
-            if ((nx >= 0 && nx < m) && (ny >= 0 && ny < n) && paper[nx][ny] == 0 && !visited[nx][ny]) {
-                cnt += dfs(nx, ny);
-            }
+            if(nx < 0 || ny < 0 || nx >= M || ny >= N) continue;
+            if(visited[nx][ny] || arr[nx][ny] == 1) continue;
+            size += dfs(nx,ny);
         }
-        return cnt;
+
+        return size;
     }
 }
+
