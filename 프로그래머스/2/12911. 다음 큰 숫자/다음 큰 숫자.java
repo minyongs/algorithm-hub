@@ -1,25 +1,25 @@
 class Solution {
     public int solution(int n) {
-        
-        int countOnes = count(Integer.toBinaryString(n));
+        int cnt1 = countOne(n);
 
-        
-        while (true) {
-            n++;
-            if (count(Integer.toBinaryString(n)) == countOnes) {
-                return n;
+        for (int i = n + 1; ; i++) { // 무한 루프로 변경
+            int cnt2 = countOne(i);
+            if (cnt1 == cnt2) {
+                return i;
             }
         }
     }
 
-    
-    private static int count(String s) {
+    public int countOne(int num) {
+        String str = Integer.toBinaryString(num);
         int cnt = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '1') {
+
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '1') {
                 cnt++;
             }
         }
+
         return cnt;
     }
 }
