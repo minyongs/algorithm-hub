@@ -1,23 +1,30 @@
-import java.util.Stack;
+import java.util.*;
 class Solution {
     boolean solution(String s) {
-        Stack<Character> stack = new Stack<>();
+        boolean answer = true;
 
-        for(int i = 0 ; i < s.length();i++){
-            if(s.charAt(i) == '('){
-                stack.push('(');
-            }else{
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i = 0 ; i < s.length(); i++){
+            // '('가 들어오면 Stack 에 push
+            char letter = s.charAt(i);
+            
+            if(letter == '('){
+                stack.push(letter);
+            }else if(letter == ')'){ // ')'가 들어오면 Stack pop(단, Stack 이 비어있으면 X)
                 if(stack.isEmpty()){
-                    return false;
-                }else{
-                    stack.pop();
+                    answer = false;
+                    break;
                 }
+                stack.pop();
             }
+  
         }
-        if(stack.isEmpty()){
-            return true;
-        }else{
-            return false;
+        // loop를 다 돌았는데 Stack이 비어있지 않으면 return false
+        if(!stack.isEmpty()){
+            answer = false;
         }
+
+        return answer;
     }
 }
